@@ -4,25 +4,37 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { openDatabase } from '../database/database';
 
-const ResultScreen = ({ route }: any) => {
-  const { dream } = route.params; // ✅ 입력받은 꿈
-  const [results, setResults] = useState<any[]>([]);
+type DreamItem = {
+  dream: string;
+  interpretation: string;
+};
+
+type RouteParams = {
+  route: {
+    params: {
+      dream: string;
+    };
+  };
+};
+
+const ResultScreen = ({ route }: RouteParams) => {
+  const { dream } = route.params;
+  const [results, setResults] = useState<DreamItem[]>([]);
 
   useEffect(() => {
     const searchDream = async () => {
       try {
         const db = await openDatabase();
 
-        db.transaction(tx => {
-          // ✅ 예시: keyword에 dream 내용 일부가 포함된 경우 검색
+        db.transaction((tx: any) => {
           tx.executeSql(
             'SELECT * FROM dreams WHERE keyword LIKE ?',
             [`%${dream}%`],
-            (_, { rows }) => {
+            (_: any, { rows }: { rows: any }) => {
               console.log('✅ 검색 결과:', rows._array);
               setResults(rows._array);
             },
-            (_, error) => {
+            (_: any, error: any) => {
               console.error('❌ 검색 실패:', error);
               return false;
             }

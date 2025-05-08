@@ -16,8 +16,8 @@ export const openDatabase = async () => {
     () => {
       console.log('✅ SQLite DB 열기 성공');
     },
-    error => {
-      console.error('❌ SQLite DB 열기 실패:', error);
+    (error: any) => {
+      console.log('DB 연결 실패', error);
     }
   );
 };
