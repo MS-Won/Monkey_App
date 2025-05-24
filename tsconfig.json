@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src", "App.tsx"],
+  "include": ["src","src/types","App.tsx"],
   "exclude": ["node_modules"]
 }
